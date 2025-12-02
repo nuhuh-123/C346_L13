@@ -1,6 +1,6 @@
 import React from 'react';
 import {StatusBar, Button, SectionList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {datasource} from './Data.js';
+import {datasource} from './Data';
 
 const styles = StyleSheet.create({
     textStyle: {

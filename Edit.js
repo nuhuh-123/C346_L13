@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Alert, View, Button, Text, TextInput} from 'react-native';
-import {datasource} from './Data.js';
+import {datasource} from './Data';
 
 const Edit = ({navigation, route}) => {
     const [letter, setLetter] = useState(route.params.key);
