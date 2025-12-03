@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {StatusBar, Button, SectionList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import { useSafeAreaInsets  } from 'react-native-safe-area-context';
 import {datasource} from './Data';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
     textStyle: {
@@ -21,6 +23,22 @@ const styles = StyleSheet.create({
 });
 
 const Home = ({navigation}) => {
+    const insets = useSafeAreaInsets();
+
+    const [myData, setMyData] = useState([]);
+
+    const getData = async () => {
+        let datastr = await AsyncStorage.getItem("alphadata");
+        if (datastr != null) {
+            let data = JSON.parse(datastr);
+            setMyData(data);
+        }
+        else {
+            setMyData(datasource);
+        }
+    };
+
+    getData();
 
     const renderItem = ({item, index, section}) => {
         return (
@@ -43,12 +61,13 @@ const Home = ({navigation}) => {
         );
     };
     return (
-        <View>
+        <View style={{flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom}}>
             <StatusBar/>
             <Button title='Add Letter' onPress={() => {
-                navigation.navigate("Add")
+                let datastr = JSON.stringify(myData);
+                navigation.navigate("Add", {data: datastr});
             }}/>
-            <SectionList sections={datasource}
+            <SectionList sections={myData}
                          renderItem={renderItem}
                          renderSectionHeader={sectionHeader
                          }/>

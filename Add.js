@@ -1,14 +1,23 @@
 import React, {useState} from 'react';
 import {StatusBar, View, Button, Text, TextInput} from 'react-native';
+import { useSafeAreaInsets  } from 'react-native-safe-area-context';
 import {Picker} from '@react-native-picker/picker';
-import {datasource} from './Data';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Add = ({navigation}) => {
+
+const Add = ({navigation, route}) => {
+    const insets = useSafeAreaInsets();
+
     const [letter, setLetter] = useState("");
     const [type, setType] = useState("Vowels");
 
+    const setData = async (value) => {
+        AsyncStorage.setItem("alphadata", value);
+        navigation.navigate("Home");
+    }
+
     return (
-        <View>
+        <View style={{flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom}}>
             <StatusBar/>
             <Text>Letter:</Text>
             <TextInput maxLength={1} style={{borderWidth: 1}} onChangeText={(text) => setLetter(text)}/>
@@ -17,16 +26,18 @@ const Add = ({navigation}) => {
                 <Picker.Item label='Consonants' value='Consonants'/>
             </Picker>
             <Button title='Submit'
-                    onPress={() => {
-                        let item = {key: letter};
-                        let indexnum = 1;
-                        if (type == "Vowels") {
-                            indexnum = 0;
-                        }
-                        datasource[indexnum].data.push(item);
-                        navigation.navigate("Home")
-                    }
-                    }
+            onPress={() => {
+                let mydata = JSON.parse(route.params.datastring);
+                let item = {key: letter};
+                let indexnum = 1;
+                if (type == "Vowels") {
+                    indexnum = 0;
+                }
+                mydata[indexnum].data.push(item);
+                let stringdata = JSON.stringify(mydata);
+                setData(stringdata);
+                }
+            }
             />
         </View>
     );

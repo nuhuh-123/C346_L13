@@ -1,11 +1,34 @@
 import React, {useState} from 'react';
 import {Alert, View, Button, Text, TextInput} from 'react-native';
+import { useSafeAreaInsets  } from 'react-native-safe-area-context';
 import {datasource} from './Data';
 
 const Edit = ({navigation, route}) => {
+    const insets = useSafeAreaInsets();
+
     const [letter, setLetter] = useState(route.params.key);
+    const [myData, setMyData] = useState([]);
+
+    const getData = async () => {
+        let datastr = await AsyncStorage.getItem("alphadata");
+        if (datastr != null) {
+            let data = JSON.parse(datastr);
+            setMyData(data);
+        }
+        else {
+            setMyData(datasource);
+        }
+    };
+
+    const setData = async (value) => {
+        AsyncStorage.setItem("alphadata", value);
+        navigation.navigate("Home");
+    };
+
+    getData();
+
     return (
-        <View>
+        <View style={{flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom}}>
             <Text>Letter:</Text>
             <TextInput value={letter} maxLength={1} style={{borderWidth: 1}} onChangeText={(text) => setLetter(text)}/>
             <View style={{flexDirection: "row"}}>
