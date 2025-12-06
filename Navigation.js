@@ -8,15 +8,15 @@ import Edit from "./Edit";
 const Stack = createNativeStackNavigator();
 
 const Navigation = () => {
-    return(
-    <NavigationContainer >
-        <Stack.Navigator screenOptions={{headerShown:false}}>
-          <Stack.Screen name='Home' component={Home} />
-          <Stack.Screen name='Add' component={Add} />
-          <Stack.Screen name='Edit' component={Edit} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-}
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name='Home' component={Home} />
+        <Stack.Screen name='Add' component={Add} />
+        <Stack.Screen name='Edit' component={Edit} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 export default Navigation;
